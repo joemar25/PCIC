@@ -1,30 +1,12 @@
-# pcic_app
+# PCIC Application
 
 A new Flutter project.
 
-## Getting Started
+## Downloader
 
-This project is a starting point for a Flutter application that follows the
-[simple app state management
-tutorial](https://flutter.dev/docs/development/data-and-backend/state-mgmt/simple).
+[Documentation](https://pub.dev/packages/flutter_downloader)
+[Permission Video](https://www.youtube.com/watch?v=tRdU5gnbrmc)
 
-For help getting started with Flutter development, view the
-[online documentation](https://flutter.dev/docs), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+## Firebase
 
-## Assets
-
-The `assets` directory houses images, fonts, and any other files you want to
-include with your application.
-
-The `assets/images` directory contains [resolution-aware
-images](https://flutter.dev/docs/development/ui/assets-and-images#resolution-aware).
-
-## Localization
-
-This project generates localized messages based on arb files found in
-the `lib/src/localization` directory.
-
-To support additional languages, please visit the tutorial on
-[Internationalizing Flutter
-apps](https://flutter.dev/docs/development/accessibility-and-localization/internationalization)
+[Tutorial](https://www.youtube.com/watch?v=_3W-JuIVFlg&t=96s)
