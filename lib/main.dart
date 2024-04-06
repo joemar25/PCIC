@@ -1,14 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_downloader/flutter_downloader.dart';
+import 'package:url_strategy/url_strategy.dart';
 
 import 'src/app.dart';
 import 'src/settings/settings_controller.dart';
 import 'src/settings/settings_service.dart';
 
 void main() async {
-// Set Up downloading
+  setPathUrlStrategy();
   WidgetsFlutterBinding.ensureInitialized();
-  await FlutterDownloader.initialize(debug: true, ignoreSsl: true);
 
   // Set up the SettingsController, which will glue user settings to multiple
   // Flutter Widgets.

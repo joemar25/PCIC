@@ -1,4 +1,4 @@
-name: PCIC_App
+name: pcic_app
 description: "A new Flutter project."
 
 # Prevent accidental publishing to pub.dev.
@@ -17,8 +17,11 @@ dependencies:
     sdk: flutter
 
   flutter_launcher_icons: ^0.13.1
-  flutter_downloader: ^1.11.6
-  
+  shared_preferences: ^2.2.2
+  dio: ^5.4.2+1
+  path_provider: ^2.1.2
+  provider: ^6.1.2
+  url_strategy: ^0.2.0
 
 dev_dependencies:
   flutter_test:
@@ -30,6 +33,9 @@ flutter_launcher_icons:
   android: true
   ios: true
   image_path: "assets/images/pcic_logo.png"
+  web:
+    generate: true
+    image_path: "assets/images/pcic_logo.png"
 
 flutter:
   uses-material-design: true
