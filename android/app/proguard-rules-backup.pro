@@ -27,7 +27,7 @@
 #Crashlytics
 -keepattributes SourceFile,LineNumberTable        # Keep file names and line numbers.
 #-keep public class * extends java.lang.Exception
-#-keep class com.example_app.** { *; }.   # Unique App id
+#-keep class com.quanby_app.** { *; }.   # Unique App id
 
 #twilio_programmable_video
 -keep class tvi.webrtc.** { *; }

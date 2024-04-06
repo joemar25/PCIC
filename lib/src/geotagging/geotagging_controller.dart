@@ -3,7 +3,7 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:pcic_app/src/geotagging/geotagging_service.dart';
 
-import 'geotagging_service.dart';
+// import 'geotagging_service.dart';
 
 class GeotaggingController extends ChangeNotifier {
   final GeotaggingServices _geotaggingServices = GeotaggingServices();

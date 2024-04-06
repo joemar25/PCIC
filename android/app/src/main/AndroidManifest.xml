@@ -1,5 +1,5 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.pcic_app">
+    package="com.quanby.pcic_app">
 
     <!-- Permissions -->
     <uses-permission android:name="android.permission.INTERNET" />

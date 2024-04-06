@@ -69,7 +69,7 @@ class DefaultFirebaseOptions {
     projectId: 'pcic-97692',
     databaseURL: 'https://pcic-97692-default-rtdb.firebaseio.com',
     storageBucket: 'pcic-97692.appspot.com',
-    iosBundleId: 'com.example.pcicApp',
+    iosBundleId: 'com.quanby.pcicApp',
   );
 
   static const FirebaseOptions macos = FirebaseOptions(
@@ -79,6 +79,6 @@ class DefaultFirebaseOptions {
     projectId: 'pcic-97692',
     databaseURL: 'https://pcic-97692-default-rtdb.firebaseio.com',
     storageBucket: 'pcic-97692.appspot.com',
-    iosBundleId: 'com.example.pcicApp.RunnerTests',
+    iosBundleId: 'com.quanby.pcicApp.RunnerTests',
   );
 }

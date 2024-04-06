@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:331409317731:android:3b03b438f30d7b9fe07d56",
         "android_client_info": {
-          "package_name": "com.example.pcic"
+          "package_name": "com.quanby.pcic"
         }
       },
       "oauth_client": [],
@@ -29,7 +29,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:331409317731:android:b4d53e29050421d0e07d56",
         "android_client_info": {
-          "package_name": "com.example.pcic_app"
+          "package_name": "com.quanby.pcic_app"
         }
       },
       "oauth_client": [],
@@ -48,7 +48,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:331409317731:android:d7acfdf16a6842c0e07d56",
         "android_client_info": {
-          "package_name": "com.example.pcic_mobile_app"
+          "package_name": "com.quanby.pcic_mobile_app"
         }
       },
       "oauth_client": [],
