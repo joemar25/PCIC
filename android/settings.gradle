@@ -20,7 +20,9 @@ pluginManagement {
 plugins {
     id "dev.flutter.flutter-plugin-loader" version "1.0.0"
     id "com.android.application" version "7.3.0" apply false
-    id "org.jetbrains.kotlin.android" version "1.7.10" apply false
+
+    // joemar notes - punta ka sa readme. grabe tong plugin na to. di ko alam kung bakit di to kasama sa default na plugins.
+    id "org.jetbrains.kotlin.android" version "2.0.0-Beta5" apply false
 }
 
 include ":app"

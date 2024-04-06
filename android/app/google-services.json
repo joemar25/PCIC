@@ -1,0 +1,68 @@
+{
+  "project_info": {
+    "project_number": "331409317731",
+    "firebase_url": "https://pcic-97692-default-rtdb.firebaseio.com",
+    "project_id": "pcic-97692",
+    "storage_bucket": "pcic-97692.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331409317731:android:3b03b438f30d7b9fe07d56",
+        "android_client_info": {
+          "package_name": "com.example.pcic"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMXBz35aNPP9HnJu-lYK7guCHgdV_LX1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331409317731:android:b4d53e29050421d0e07d56",
+        "android_client_info": {
+          "package_name": "com.example.pcic_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMXBz35aNPP9HnJu-lYK7guCHgdV_LX1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:331409317731:android:d7acfdf16a6842c0e07d56",
+        "android_client_info": {
+          "package_name": "com.example.pcic_mobile_app"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCMXBz35aNPP9HnJu-lYK7guCHgdV_LX1g"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

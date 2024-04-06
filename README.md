@@ -67,6 +67,24 @@ Configure your development environment for Java, which might be necessary for ce
 
 - [Tutorial](https://www.youtube.com/watch?v=SQykK40fFds)
 
+### Configuration before map
+
+Punta lang sa settings.gradle at wag dun sa build.gradle kasi visible ung pinapabago sa error na iupgrade ung kotlin version
+
+- [Jetbrain Kotlin Version](https://plugins.gradle.org/plugin/org.jetbrains.kotlin.android)
+
+### Map
+
+- [Tutorial](https://www.youtube.com/watch?v=M7cOmiSly3Q)
+
+### Upgrade Everything
+
+- Command
+
+    ```cmd
+    flutter upgrade
+    ```
+
 ## Optimization Techniques
 
 Enhance the performance of your Flutter application with these optimization hacks:

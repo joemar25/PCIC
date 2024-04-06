@@ -1,20 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/app_localizations.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:pcic_app/src/geotagging/geotagging_controller.dart';
+import 'package:pcic_app/src/geotagging/geotagging_view.dart';
 
 import 'sample_feature/sample_item_details_view.dart';
-import 'sample_feature/sample_item_list_view.dart';
 import 'settings/settings_controller.dart';
 import 'settings/settings_view.dart';
 
 /// The Widget that configures your application.
 class MyApp extends StatelessWidget {
   const MyApp({
-    super.key,
+    super.key, // Optional key parameter
     required this.settingsController,
-  });
+    required this.geotaggingController, // SettingsController required parameter
+  }); // Call the superclass constructor with the optional key parameter
 
   final SettingsController settingsController;
+
+  final GeotaggingController geotaggingController;
 
   @override
   Widget build(BuildContext context) {
@@ -71,9 +75,10 @@ class MyApp extends StatelessWidget {
                     return SettingsView(controller: settingsController);
                   case SampleItemDetailsView.routeName:
                     return const SampleItemDetailsView();
-                  case SampleItemListView.routeName:
+                  case GeotaggingView.routeName:
+                    return GeotaggingView(controller: geotaggingController);
                   default:
-                    return const SampleItemListView();
+                    return GeotaggingView(controller: geotaggingController);
                 }
               },
             );

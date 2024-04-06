@@ -1,3 +1,4 @@
+// this is the settings view file
 import 'package:flutter/material.dart';
 
 import 'settings_controller.dart';
