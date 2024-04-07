@@ -1,5 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:pcic_app/src/geotagging/geotagging_service.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'firebase_options.dart';
 
@@ -22,7 +23,7 @@ void main() async {
 
   // Set up the SettingsController to manage user settings
   final settingsController = SettingsController(SettingsService());
-  final geotaggingController = GeotaggingController();
+  final geotaggingController = GeotaggingController(GeotaggingServices());
 
   // Load user's preferred theme while showing the splash screen
   await settingsController.loadSettings();

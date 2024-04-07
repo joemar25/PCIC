@@ -4,28 +4,14 @@ import 'package:latlong2/latlong.dart';
 class GeotaggingServices {
   final Location _locationController = Location();
 
-  Future<LatLng?> getCurrentLocation() async {
-    bool serviceEnabled;
-    PermissionStatus permissionGranted;
+  void startLocationUpdates({required Function(LatLng) onLocationUpdate}) {
+    _locationController.onLocationChanged.listen((LocationData locationData) {
+      onLocationUpdate(LatLng(locationData.latitude!, locationData.longitude!));
+    });
+  }
 
-    serviceEnabled = await _locationController.serviceEnabled();
-    if (!serviceEnabled) {
-      serviceEnabled = await _locationController.requestService();
-      if (!serviceEnabled) {
-        return null;
-      }
-    }
-
-    permissionGranted = await _locationController.hasPermission();
-    if (permissionGranted == PermissionStatus.denied) {
-      permissionGranted = await _locationController.requestPermission();
-      if (permissionGranted != PermissionStatus.granted) {
-        return null;
-      }
-    }
-
-    LocationData currentLocation = await _locationController.getLocation();
-    return LatLng(currentLocation.latitude!, currentLocation.longitude!);
+  void stopLocationUpdates() {
+    _locationController.onLocationChanged.listen(null).cancel();
   }
 
   Future<List<LatLng>> getPolylinePoints(

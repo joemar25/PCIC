@@ -2,15 +2,30 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
 import 'package:latlong2/latlong.dart';
-
 import 'geotagging_controller.dart';
 
-class GeotaggingView extends StatelessWidget {
+class GeotaggingView extends StatefulWidget {
   static const routeName = '/geotagging';
-
   final GeotaggingController controller;
 
   const GeotaggingView({super.key, required this.controller});
+
+  @override
+  _GeotaggingViewState createState() => _GeotaggingViewState();
+}
+
+class _GeotaggingViewState extends State<GeotaggingView> {
+  @override
+  void initState() {
+    super.initState();
+    widget.controller.startLocationUpdates();
+  }
+
+  @override
+  void dispose() {
+    widget.controller.stopLocationUpdates();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +34,12 @@ class GeotaggingView extends StatelessWidget {
         title: const Text('Geotagging'),
       ),
       body: AnimatedBuilder(
-        animation: controller,
+        animation: widget.controller,
         builder: (context, child) {
           return FlutterMap(
-            options: const MapOptions(
-              center: LatLng(37.4223, -122.0848),
+            options: MapOptions(
+              center: widget.controller.currentLocation ??
+                  const LatLng(37.4223, -122.0848),
               zoom: 13.0,
             ),
             children: [
@@ -33,7 +49,7 @@ class GeotaggingView extends StatelessWidget {
                 tileProvider: CancellableNetworkTileProvider(),
               ),
               MarkerLayer(
-                markers: controller.markers.map((marker) {
+                markers: widget.controller.markers.map((marker) {
                   return Marker(
                     width: 80.0,
                     height: 80.0,
@@ -42,17 +58,24 @@ class GeotaggingView extends StatelessWidget {
                   );
                 }).toList(),
               ),
-              PolylineLayer(polylines: controller.polylines),
+              PolylineLayer(polylines: widget.controller.polylines),
             ],
           );
         },
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          controller.getCurrentLocation();
-        },
-        child: const Icon(Icons.location_searching),
-      ),
     );
   }
 }
+
+
+
+// MarkerLayer(
+//   markers: controller.markers.map((marker) {
+//     return Marker(
+//       width: 80.0,
+//       height: 80.0,
+//       point: marker.point,
+//       child: const Icon(Icons.location_on),
+//     );
+//   }).toList(),
+// ),
