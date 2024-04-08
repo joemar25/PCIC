@@ -1,7 +1,7 @@
 // this is the settings view file
 import 'package:flutter/material.dart';
 
-import 'settings_controller.dart';
+import 'controller.dart';
 
 /// Displays the various settings that can be customized by the user.
 ///

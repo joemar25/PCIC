@@ -1,8 +1,8 @@
+import 'controller.dart';
 import 'package:flutter/material.dart';
+import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_cancellable_tile_provider/flutter_map_cancellable_tile_provider.dart';
-import 'package:latlong2/latlong.dart';
-import 'geotagging_controller.dart';
 
 class GeotaggingView extends StatefulWidget {
   static const routeName = '/geotagging';
@@ -11,10 +11,10 @@ class GeotaggingView extends StatefulWidget {
   const GeotaggingView({super.key, required this.controller});
 
   @override
-  _GeotaggingViewState createState() => _GeotaggingViewState();
+  GeotaggingViewState createState() => GeotaggingViewState();
 }
 
-class _GeotaggingViewState extends State<GeotaggingView> {
+class GeotaggingViewState extends State<GeotaggingView> {
   @override
   void initState() {
     super.initState();
@@ -38,9 +38,9 @@ class _GeotaggingViewState extends State<GeotaggingView> {
         builder: (context, child) {
           return FlutterMap(
             options: MapOptions(
-              center: widget.controller.currentLocation ??
+              initialCenter: widget.controller.currentLocation ??
                   const LatLng(37.4223, -122.0848),
-              zoom: 13.0,
+              initialZoom: 20.0,
             ),
             children: [
               TileLayer(
@@ -48,16 +48,17 @@ class _GeotaggingViewState extends State<GeotaggingView> {
                     'https://api.mapbox.com/styles/v1/quanbysolutions/cluhoxol502q801oi8od2cmvz/tiles/256/{z}/{x}/{y}@2x?access_token=pk.eyJ1IjoicXVhbmJ5c29sdXRpb25zIiwiYSI6ImNsdWhrejRwdDJyYnAya3A2NHFqbXlsbHEifQ.WJ5Ng-AO-dTrlkUHD_ebMw',
                 tileProvider: CancellableNetworkTileProvider(),
               ),
-              MarkerLayer(
-                markers: widget.controller.markers.map((marker) {
-                  return Marker(
-                    width: 80.0,
-                    height: 80.0,
-                    point: marker.point,
-                    child: const Icon(Icons.location_on),
-                  );
-                }).toList(),
-              ),
+              if (widget.controller.markers.isNotEmpty)
+                MarkerLayer(
+                  markers: widget.controller.markers.map((marker) {
+                    return Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: marker.point,
+                      child: const Icon(Icons.location_on),
+                    );
+                  }).toList(),
+                ),
               PolylineLayer(polylines: widget.controller.polylines),
             ],
           );
@@ -66,16 +67,3 @@ class _GeotaggingViewState extends State<GeotaggingView> {
     );
   }
 }
-
-
-
-// MarkerLayer(
-//   markers: controller.markers.map((marker) {
-//     return Marker(
-//       width: 80.0,
-//       height: 80.0,
-//       point: marker.point,
-//       child: const Icon(Icons.location_on),
-//     );
-//   }).toList(),
-// ),
