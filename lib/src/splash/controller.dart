@@ -1,15 +1,16 @@
-// file: splash/controller.dart
 import 'package:flutter/material.dart';
 import 'service.dart';
+import '../navigation/service.dart';
 
 class SplashController with ChangeNotifier {
   final SplashService _splashService;
+  final NavigationService _navigationService;
 
-  SplashController(this._splashService);
+  SplashController(this._splashService, this._navigationService);
 
   Future<void> initializeApp() async {
     // Simulate app initialization
     await _splashService.initializeApp();
-    notifyListeners();
+    _navigationService.navigateTo('/auth');
   }
 }

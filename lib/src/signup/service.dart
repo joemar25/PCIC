@@ -1,6 +1,3 @@
-// file: signup/service.dart
-import '../auth/service.dart';
-
 class SignUpService {
   Future<bool> signUp(String username, String email, String password) async {
     // Implement the sign up logic here
@@ -9,10 +6,6 @@ class SignUpService {
 
     // Dummy implementation for demonstration purposes
     await Future.delayed(const Duration(seconds: 2));
-
-    // Set the token upon successful signup
-    AuthService.setToken('dummy_token');
-
     return true;
   }
 }

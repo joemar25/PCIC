@@ -1,12 +1,11 @@
-// file: home/view.dart
+// file: auth/view.dart
 import 'package:flutter/material.dart';
-
 import 'controller.dart';
 
-class HomeView extends StatelessWidget {
-  final HomeController controller;
+class AuthView extends StatelessWidget {
+  final AuthController controller;
 
-  const HomeView({super.key, required this.controller});
+  const AuthView({super.key, required this.controller});
 
   @override
   Widget build(BuildContext context) {
@@ -19,11 +18,11 @@ class HomeView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: () => controller.navigateToLogin(context),
+              onPressed: controller.navigateToLogin,
               child: const Text('Login'),
             ),
             ElevatedButton(
-              onPressed: () => controller.navigateToSignUp(context),
+              onPressed: controller.navigateToSignUp,
               child: const Text('Sign Up'),
             ),
           ],

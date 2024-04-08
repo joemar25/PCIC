@@ -1,6 +1,4 @@
-// file: splash/view.dart
 import 'package:flutter/material.dart';
-
 import 'controller.dart';
 
 class SplashView extends StatefulWidget {
@@ -16,18 +14,7 @@ class SplashViewState extends State<SplashView> {
   @override
   void initState() {
     super.initState();
-    widget.controller.addListener(_navigateToHome);
     widget.controller.initializeApp();
-  }
-
-  @override
-  void dispose() {
-    widget.controller.removeListener(_navigateToHome);
-    super.dispose();
-  }
-
-  void _navigateToHome() {
-    Navigator.pushReplacementNamed(context, '/home');
   }
 
   @override

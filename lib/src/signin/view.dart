@@ -1,18 +1,18 @@
-// file: login/view.dart
+// file: signin/view.dart
 import 'package:flutter/material.dart';
 
 import 'controller.dart';
 
-class LoginView extends StatefulWidget {
-  final LoginController controller;
+class SigninView extends StatefulWidget {
+  final SignInController controller;
 
-  const LoginView({super.key, required this.controller});
+  const SigninView({super.key, required this.controller});
 
   @override
-  LoginViewState createState() => LoginViewState();
+  SigninViewState createState() => SigninViewState();
 }
 
-class LoginViewState extends State<LoginView> {
+class SigninViewState extends State<SigninView> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();

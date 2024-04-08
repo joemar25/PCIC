@@ -1,5 +1,6 @@
 // file: dashboard/view.dart
 import 'package:flutter/material.dart';
+
 import 'controller.dart';
 
 class DashboardView extends StatelessWidget {
@@ -15,7 +16,7 @@ class DashboardView extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => controller.logout(context),
+            onPressed: () => controller.signout(context),
           ),
         ],
       ),
