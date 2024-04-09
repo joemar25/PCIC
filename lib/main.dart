@@ -17,8 +17,6 @@ import 'src/geotagging/controller.dart';
 import 'src/auth/services.dart';
 import 'src/splash/service.dart';
 import 'src/settings/service.dart';
-import 'src/signin/service.dart';
-import 'src/signup/service.dart';
 import 'src/geotagging/service.dart';
 
 void main() async {
@@ -40,10 +38,10 @@ void main() async {
   final geotaggingController = GeotaggingController(GeotaggingServices());
   final splashController = SplashController(SplashService(), navigationService);
   final authController = AuthController(AuthService(), navigationService);
-  final dashboardController = DashboardController(navigationService);
-  final signinController =
-      SignInController(SignIntService(), navigationService);
-  final signUpController = SignUpController(SignUpService(), navigationService);
+  final dashboardController =
+      DashboardController(navigationService, AuthService());
+  final signinController = SignInController(AuthService(), navigationService);
+  final signUpController = SignUpController(AuthService(), navigationService);
   final logoutController = SignOutController(
     service: SignOutService(),
     navigationService: navigationService,

@@ -1,6 +1,5 @@
 // file: dashboard/view.dart
 import 'package:flutter/material.dart';
-
 import 'controller.dart';
 
 class DashboardView extends StatelessWidget {
@@ -16,12 +15,22 @@ class DashboardView extends StatelessWidget {
         actions: [
           IconButton(
             icon: const Icon(Icons.logout),
-            onPressed: () => controller.signout(context),
+            onPressed: () => controller.signOut(),
           ),
         ],
       ),
-      body: const Center(
-        child: Text('Welcome to the Dashboard!'),
+      body: Center(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Welcome, ${controller.currentUserEmail}!',
+              style: const TextStyle(fontSize: 20),
+            ),
+            const SizedBox(height: 16),
+            const Text('You are now logged in.'),
+          ],
+        ),
       ),
     );
   }

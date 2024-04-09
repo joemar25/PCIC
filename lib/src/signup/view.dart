@@ -19,6 +19,9 @@ class SignUpViewState extends State<SignUpView> {
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
 
+  bool _obscurePassword = true;
+  bool _obscureConfirmPassword = true;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -54,8 +57,22 @@ class SignUpViewState extends State<SignUpView> {
               ),
               TextFormField(
                 controller: _passwordController,
-                decoration: const InputDecoration(labelText: 'Password'),
-                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscurePassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscurePassword = !_obscurePassword;
+                      });
+                    },
+                  ),
+                ),
+                obscureText: _obscurePassword,
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'Please enter a password';
@@ -65,9 +82,22 @@ class SignUpViewState extends State<SignUpView> {
               ),
               TextFormField(
                 controller: _confirmPasswordController,
-                decoration:
-                    const InputDecoration(labelText: 'Confirm Password'),
-                obscureText: true,
+                decoration: InputDecoration(
+                  labelText: 'Confirm Password',
+                  suffixIcon: IconButton(
+                    icon: Icon(
+                      _obscureConfirmPassword
+                          ? Icons.visibility
+                          : Icons.visibility_off,
+                    ),
+                    onPressed: () {
+                      setState(() {
+                        _obscureConfirmPassword = !_obscureConfirmPassword;
+                      });
+                    },
+                  ),
+                ),
+                obscureText: _obscureConfirmPassword,
                 validator: (value) {
                   if (value?.isEmpty ?? true) {
                     return 'Please confirm your password';
@@ -79,17 +109,25 @@ class SignUpViewState extends State<SignUpView> {
                 },
               ),
               ElevatedButton(
-                onPressed: () {
-                  if (_formKey.currentState?.validate() ?? false) {
-                    widget.controller.signUp(
-                      _usernameController.text,
-                      _emailController.text,
-                      _passwordController.text,
-                    );
-                  }
-                },
-                child: const Text('Sign Up'),
+                onPressed: widget.controller.isLoading
+                    ? null
+                    : () {
+                        if (_formKey.currentState?.validate() ?? false) {
+                          widget.controller.signUp(
+                            _emailController.text,
+                            _passwordController.text,
+                          );
+                        }
+                      },
+                child: widget.controller.isLoading
+                    ? const CircularProgressIndicator()
+                    : const Text('Sign Up'),
               ),
+              if (widget.controller.errorMessage != null)
+                Text(
+                  widget.controller.errorMessage!,
+                  style: const TextStyle(color: Colors.red),
+                ),
             ],
           ),
         ),

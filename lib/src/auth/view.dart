@@ -18,7 +18,7 @@ class AuthView extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             ElevatedButton(
-              onPressed: controller.navigateToLogin,
+              onPressed: controller.navigateToSignIn,
               child: const Text('Login'),
             ),
             ElevatedButton(

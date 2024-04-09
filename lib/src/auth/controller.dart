@@ -1,3 +1,4 @@
+// file: auth/controller.dart
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:pcic_app/src/auth/services.dart';
@@ -10,14 +11,12 @@ class AuthController extends ChangeNotifier {
   AuthController(this._authService, this._navigationService) {
     _authService.authStateChanges.listen((User? user) {
       if (user != null) {
-        _navigationService.replaceWith('/dashboard');
-      } else {
-        _navigationService.replaceWith('/auth');
+        _navigationService.navigateTo('/dashboard');
       }
     });
   }
 
-  void navigateToLogin() {
+  void navigateToSignIn() {
     _navigationService.navigateTo('/signin');
   }
 
