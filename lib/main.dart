@@ -1,5 +1,7 @@
 // file: main.dart
 import 'package:flutter/material.dart';
+import 'package:flutter_map/flutter_map.dart';
+import 'package:screenshot/screenshot.dart';
 import 'package:url_strategy/url_strategy.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'src/app.dart';
@@ -35,7 +37,13 @@ void main() async {
 
   // Set Controllers
   final settingsController = SettingsController(SettingsService());
-  final geotaggingController = GeotaggingController(GeotaggingServices());
+  final geotaggingController = GeotaggingController(
+    mapController: MapController(),
+    screenshotController: ScreenshotController(),
+    geotaggingServices: GeotaggingServices(),
+    navigationService: NavigationService(),
+  );
+
   final splashController = SplashController(SplashService(), navigationService);
   final authController = AuthController(AuthService(), navigationService);
   final dashboardController =

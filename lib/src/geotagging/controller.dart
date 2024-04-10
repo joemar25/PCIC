@@ -1,40 +1,104 @@
+// file: geotagging/controller.dart
 import 'package:flutter/material.dart';
-import 'package:latlong2/latlong.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:pcic_app/src/geotagging/service.dart';
+import 'package:latlong2/latlong.dart';
+import 'package:pcic_app/src/navigation/service.dart';
+import 'package:screenshot/screenshot.dart';
 
 class GeotaggingController with ChangeNotifier {
-  GeotaggingController(this._geotaggingServices);
+  final GeotaggingServices geotaggingServices;
+  final MapController mapController;
+  final ScreenshotController screenshotController;
+  final NavigationService navigationService;
 
-  final GeotaggingServices _geotaggingServices;
-
+  List<LatLng> routePoints = [];
   List<Marker> markers = [];
   List<Polyline> polylines = [];
   LatLng? currentLocation;
+  LatLng? initialRoutePoint;
+  LatLng? endRoutePoint;
+  bool isRouting = false;
+  bool showPinDropConfirmation = true;
+  bool dontShowAgain = false;
+  double currentZoom = 18.0;
+
+  GeotaggingController({
+    required this.mapController,
+    required this.screenshotController,
+    required this.geotaggingServices,
+    required this.navigationService,
+  });
 
   void startLocationUpdates() {
-    _geotaggingServices.startLocationUpdates(
-        onLocationUpdate: (LatLng location) {
-      currentLocation = location;
-      notifyListeners();
-    });
+    geotaggingServices.startLocationUpdates(
+      onLocationUpdate: (LatLng location) {
+        currentLocation = location;
+        moveMap(location);
+        notifyListeners();
+      },
+    );
   }
 
   void stopLocationUpdates() {
-    _geotaggingServices.stopLocationUpdates();
+    geotaggingServices.stopLocationUpdates();
   }
 
-  Future<void> getPolylinePoints(LatLng source, LatLng destination) async {
-    List<LatLng> polylineCoordinates =
-        await _geotaggingServices.getPolylinePoints(source, destination);
-    polylines.add(
-      Polyline(
-        points: polylineCoordinates,
-        strokeWidth: 4.0,
-        color: Colors.blue,
-      ),
-    );
+  Future<void> saveGpxFile() async {
+    await geotaggingServices.saveGpxFile(routePoints);
+  }
+
+  Future<String> captureMapScreenshot() async {
+    return await geotaggingServices.captureMapScreenshot(screenshotController);
+  }
+
+  double calculateAreaOfPolygon(List<LatLng> points) {
+    return geotaggingServices.calculateAreaOfPolygon(points);
+  }
+
+  double convertSquareMetersToPerimeters(double squareMeters) {
+    return geotaggingServices.convertSquareMetersToPerimeters(squareMeters);
+  }
+
+  double convertSquareMetersToHectares(double squareMeters) {
+    return geotaggingServices.convertSquareMetersToHectares(squareMeters);
+  }
+
+  Future<LatLng?> getCurrentLocation() async {
+    return await geotaggingServices.getCurrentLocation();
+  }
+
+  void startRouting() {
+    isRouting = true;
+    initialRoutePoint = currentLocation;
     notifyListeners();
+  }
+
+  Future<void> stopRouting() async {
+    isRouting = false;
+    endRoutePoint = currentLocation;
+    await saveGpxFile();
+    String screenshotPath = await captureMapScreenshot();
+    // TODO: Navigate to the PCICFinalView with the necessary data, including screenshotPath
+    notifyListeners();
+  }
+
+  void cancelRouting() {
+    isRouting = false;
+    routePoints.clear();
+    markers.clear();
+    polylines.clear();
+    initialRoutePoint = null;
+    endRoutePoint = null;
+    showPinDropConfirmation = true; // reset pin confirmation
+    notifyListeners();
+    navigateToDashboard();
+  }
+
+  void addMarkerAtCurrentLocation() {
+    if (currentLocation != null) {
+      addColoredMarker(currentLocation!, Colors.red);
+    }
   }
 
   void addColoredMarker(LatLng point, Color color) {
@@ -50,87 +114,92 @@ class GeotaggingController with ChangeNotifier {
         ),
       ),
     );
+    routePoints.add(point);
     notifyListeners();
   }
 
-  Future<void> addMarkerAtCurrentLocation() async {
-    // TODO: Implement addMarkerAtCurrentLocation
-  }
-
   void removeLastMarker() {
-    // TODO: Implement removeLastMarker
+    if (markers.isNotEmpty) {
+      markers.removeLast();
+      routePoints.removeLast();
+      notifyListeners();
+    }
   }
 
   void clearMarkers() {
-    // TODO: Implement clearMarkers
+    markers.clear();
+    routePoints.clear();
+    notifyListeners();
   }
 
-  Future<void> saveGpxFile() async {
-    // TODO: Implement saveGpxFile
-  }
+  Future<void> addMarkerConfirmation(BuildContext context) async {
+    bool retainPinDrop = false;
 
-  void startRouting() {
-    // TODO: Implement startRouting
-  }
+    if (showPinDropConfirmation) {
+      bool? confirm = await showDialog<bool>(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: const Text('Confirm Pin Drop'),
+            content: StatefulBuilder(
+              builder: (context, setState) {
+                return CheckboxListTile(
+                  title: const Text("Don't show this message again"),
+                  value: retainPinDrop,
+                  onChanged: (value) {
+                    setState(() {
+                      retainPinDrop = value!;
+                    });
+                  },
+                );
+              },
+            ),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(false),
+                child: const Text('Cancel'),
+              ),
+              TextButton(
+                onPressed: () => Navigator.of(context).pop(true),
+                child: const Text('Confirm'),
+              ),
+            ],
+          );
+        },
+      );
 
-  void stopRouting() {
-    // TODO: Implement stopRouting
-  }
+      if (confirm == true) {
+        addMarkerAtCurrentLocation();
+      }
 
-  void cancelRouting() {
-    // TODO: Implement cancelRouting
-  }
-
-  Future<LatLng?> getCurrentLocation() async {
-    // TODO: Implement getCurrentLocation
-    return null;
-  }
-
-  void trackRoutePoints() {
-    // TODO: Implement trackRoutePoints
-  }
-
-  Future<void> saveMapScreenshot() async {
-    // TODO: Implement saveMapScreenshot
-  }
-
-  Future<void> addMarkerConfirmation() async {
-    // TODO: Implement addMarkerConfirmation
-  }
-
-  Future<void> saveRoute() async {
-    // TODO: Implement saveRoute
-  }
-
-  Future<void> captureMapScreenshot() async {
-    // TODO: Implement captureMapScreenshot
+      showPinDropConfirmation = !retainPinDrop;
+    } else {
+      addMarkerAtCurrentLocation();
+    }
   }
 
   void moveMap(LatLng center) {
-    // TODO: Implement moveMap
-  }
-
-  Widget buildMap() {
-    // TODO: Implement buildMap
-    return Container();
+    mapController.move(center, currentZoom);
   }
 
   void zoomMap(double zoom) {
-    // TODO: Implement zoomMap
+    currentZoom = zoom;
+    mapController.move(mapController.center, zoom);
   }
 
   double getTotalArea() {
-    // TODO: Implement getTotalArea
-    return 0.0;
+    return calculateAreaOfPolygon(routePoints);
   }
 
   double getTotalAreaInPerimeters() {
-    // TODO: Implement getTotalAreaInPerimeters
-    return 0.0;
+    return convertSquareMetersToPerimeters(getTotalArea());
   }
 
   double getTotalAreaInHectares() {
-    // TODO: Implement getTotalAreaInHectares
-    return 0.0;
+    return convertSquareMetersToHectares(getTotalArea());
+  }
+
+  void navigateToDashboard() {
+    navigationService.navigateTo('/dashboard');
   }
 }

@@ -18,6 +18,10 @@ class DashboardController with ChangeNotifier {
     });
   }
 
+  void navigateToGeotagging() {
+    _navigationService.navigateTo('/geotagging');
+  }
+
   Future<void> signOut() async {
     await _authService.signOut();
     _navigationService.navigateTo('/auth');

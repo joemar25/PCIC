@@ -29,6 +29,11 @@ class DashboardView extends StatelessWidget {
             ),
             const SizedBox(height: 16),
             const Text('You are now logged in.'),
+            const SizedBox(height: 20),
+            ElevatedButton(
+              onPressed: controller.navigateToGeotagging,
+              child: const Text('Geotagging'),
+            ),
           ],
         ),
       ),
