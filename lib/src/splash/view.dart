@@ -1,3 +1,4 @@
+// file: splash/service.dart
 import 'package:flutter/material.dart';
 import 'controller.dart';
 

@@ -21,12 +21,7 @@ class GeotaggingController with ChangeNotifier {
   bool isRouting = false;
   bool showPinDropConfirmation = true;
   bool dontShowAgain = false;
-  double currentZoom = 19.0;
-  bool hasInitialAndEndPoints = false;
-
-  bool get canStartRouting => !isRouting && routePoints.isEmpty;
-  bool get canStopRouting => isRouting;
-  bool get canSaveRoute => initialRoutePoint != null && endRoutePoint != null;
+  double currentZoom = 18.0;
 
   GeotaggingController({
     required this.mapController,
@@ -50,9 +45,7 @@ class GeotaggingController with ChangeNotifier {
   }
 
   Future<void> saveGpxFile() async {
-    if (routePoints.isNotEmpty) {
-      await geotaggingServices.saveGpxFile(routePoints);
-    }
+    await geotaggingServices.saveGpxFile(routePoints);
   }
 
   Future<String> captureMapScreenshot() async {
@@ -76,58 +69,47 @@ class GeotaggingController with ChangeNotifier {
   }
 
   void startRouting() {
-    if (canStartRouting) {
-      isRouting = true;
-      hasInitialAndEndPoints = false;
-      initialRoutePoint = currentLocation;
-      if (currentLocation != null) {
-        routePoints.add(currentLocation!);
-        addColoredMarker(currentLocation!, Colors.green);
-        moveMap(currentLocation!);
-      }
-      notifyListeners();
-      trackRoutePoints();
+    isRouting = true;
+    initialRoutePoint = currentLocation;
+    if (currentLocation != null) {
+      routePoints.add(currentLocation!);
+      addColoredMarker(currentLocation!, Colors.green);
     }
+    notifyListeners();
+    trackRoutePoints();
   }
 
-  void stopRouting() async {
-    if (canStopRouting) {
-      endRoutePoint = currentLocation;
-      await saveGpxFile();
-      isRouting = false;
-      hasInitialAndEndPoints = true;
-      notifyListeners();
-    }
+  void stopRouting() {
+    isRouting = false;
+    endRoutePoint = currentLocation;
+    notifyListeners();
+
+    //   Future<void> stopRouting() async {
+    //   isRouting = false;
+    //   endRoutePoint = currentLocation;
+    //   await saveGpxFile();
+    //   String screenshotPath = await captureMapScreenshot();
+    //   // TODO: Navigate to the PCICFinalView with the necessary data, including screenshotPath
+    //   notifyListeners();
+    // }
   }
-  // String screenshotPath = await captureMapScreenshot(screenshotController);
-  /* TODO: Navigate to the PCICFinalView with the necessary data, including screenshotPath */
 
   void resetRouting() {
-    if (isRouting) {
-      stopRouting();
-    }
     isRouting = false;
     routePoints.clear();
     markers.clear();
     polylines.clear();
     initialRoutePoint = null;
     endRoutePoint = null;
-    hasInitialAndEndPoints = false;
     notifyListeners();
   }
 
   void trackRoutePoints() async {
-    isRouting = true;
-    notifyListeners();
-
     while (isRouting && currentLocation != null) {
       await Future.delayed(const Duration(seconds: 1));
       routePoints.add(currentLocation!);
       notifyListeners();
     }
-
-    isRouting = false;
-    notifyListeners();
   }
 
   void addRoutePoint(LatLng point) {
@@ -145,8 +127,8 @@ class GeotaggingController with ChangeNotifier {
     initialRoutePoint = null;
     endRoutePoint = null;
     showPinDropConfirmation = true;
-    hasInitialAndEndPoints = false;
     notifyListeners();
+    navigateToDashboard();
   }
 
   void addMarkerAtCurrentLocation() {
@@ -254,8 +236,12 @@ class GeotaggingController with ChangeNotifier {
     return convertSquareMetersToHectares(getTotalArea());
   }
 
+  void navigateToDashboard() {
+    navigationService.navigateTo('/dashboard');
+  }
+
   void cancel() {
     cancelRouting();
-    navigationService.navigateTo('/dashboard');
+    navigateToDashboard();
   }
 }

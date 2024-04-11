@@ -33,7 +33,6 @@ class GeotaggingViewState extends State<GeotaggingView> {
   @override
   void dispose() {
     widget.controller.stopLocationUpdates();
-    widget.controller.mapController.dispose();
     super.dispose();
   }
 
@@ -95,7 +94,8 @@ class GeotaggingViewState extends State<GeotaggingView> {
         );
 
         if (confirm == true) {
-          widget.controller.cancel();
+          widget.controller
+              .cancel(); // Proceed with the cancellation only if the user confirmed
         }
         return confirm ?? false;
       },
@@ -219,49 +219,14 @@ class GeotaggingViewState extends State<GeotaggingView> {
                             _buildButton(
                               'Start Routing',
                               Icons.play_arrow,
-                              widget.controller.canStartRouting,
+                              !widget.controller.isRouting,
                               widget.controller.startRouting,
                             ),
                             _buildButton(
                               'Stop Routing',
                               Icons.stop,
-                              widget.controller.canStopRouting,
+                              widget.controller.isRouting,
                               widget.controller.stopRouting,
-                            ),
-                            _buildButton(
-                              'Cancel',
-                              Icons.cancel,
-                              true, // Enable cancel button regardless of routing status
-                              () async {
-                                bool? confirm = await showDialog<bool>(
-                                  context: context,
-                                  builder: (BuildContext context) {
-                                    return AlertDialog(
-                                      title: const Text('Confirm Cancel'),
-                                      content: const Text(
-                                          'Are you sure you want to cancel routing?'),
-                                      actions: [
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop(false);
-                                          },
-                                          child: const Text('No'),
-                                        ),
-                                        TextButton(
-                                          onPressed: () {
-                                            Navigator.of(context).pop(true);
-                                          },
-                                          child: const Text('Yes'),
-                                        ),
-                                      ],
-                                    );
-                                  },
-                                );
-
-                                if (confirm == true) {
-                                  Navigator.pop(context, true); // Navigate back
-                                }
-                              },
                             ),
                           ],
                         ),
@@ -278,8 +243,51 @@ class GeotaggingViewState extends State<GeotaggingView> {
                             _buildButton(
                               'Save',
                               Icons.save,
-                              widget.controller.canSaveRoute,
+                              widget.controller.routePoints.isNotEmpty,
                               () => widget.controller.saveGpxFile(),
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 16.0),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            _buildButton(
+                              'Cancel',
+                              Icons.cancel,
+                              true,
+                              () async {
+                                bool? confirm = await showDialog<bool>(
+                                  context: context,
+                                  builder: (BuildContext context) {
+                                    return AlertDialog(
+                                      title: const Text('Confirm Cancel'),
+                                      content: const Text(
+                                          'Are you sure you want to cancel routing?'),
+                                      actions: [
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(false); // No
+                                          },
+                                          child: const Text('No'),
+                                        ),
+                                        TextButton(
+                                          onPressed: () {
+                                            Navigator.of(context)
+                                                .pop(true); // Yes
+                                          },
+                                          child: const Text('Yes'),
+                                        ),
+                                      ],
+                                    );
+                                  },
+                                );
+
+                                if (confirm == true) {
+                                  Navigator.pop(context, true); // Navigate back
+                                }
+                              },
                             ),
                           ],
                         ),
